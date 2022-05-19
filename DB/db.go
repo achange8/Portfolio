@@ -17,7 +17,7 @@ func Connect() *gorm.DB {
 	}
 	USER := os.Getenv("UserName")
 	PASS := os.Getenv("PassWord")
-	Protocol := os.Getenv("Protocal")
+	Protocol := "tcp(database-2.cnxsbvp2uyyo.ap-northeast-2.rds.amazonaws.com)"
 	DB_Name := os.Getenv("DBname")
 
 	CONNECT := USER + ":" + PASS + "@" + Protocol + "/" + DB_Name + "?charset=utf8mb4&parseTime=True&loc=Asia%2FSeoul"

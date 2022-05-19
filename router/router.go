@@ -10,6 +10,7 @@ func New() *echo.Echo {
 	e := echo.New()
 
 	e.GET("/", handler.Test)
+	e.POST("/signUp", handler.SignUp)
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
