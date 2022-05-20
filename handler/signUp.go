@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"regexp"
 
 	db "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
@@ -18,16 +19,31 @@ func SignUp(c echo.Context) error {
 	}
 
 	savepassword := user.Password
-
+	saveEmail := user.Email
+	validID := regexp.MustCompile(`[ !@#$%^&*(),.?\":{}|<>]`)
+	if validID.MatchString(user.Id) {
+		return c.JSON(http.StatusBadRequest, "plz write A-Za-z0-9")
+	}
 	id := db.Find(user, "id=?", user.Id)
 	if id.RowsAffected != 0 {
 		return c.JSON(http.StatusForbidden, "ID or Email already exists!")
 	}
-	email := db.Find(user, "email=?", user.Email)
-
+	validEmail := regexp.MustCompile(`^[_A-Za-z0-9+-.]+@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$`)
+	if !validEmail.MatchString(saveEmail) {
+		return c.JSON(http.StatusBadRequest, "plz write right email!")
+	}
+	email := db.Find(user, "email=?", saveEmail)
 	if email.RowsAffected != 0 {
 		return c.JSON(http.StatusForbidden, "ID or Email already exists!")
 	}
+	hashPW, err := module.HashPassword(savepassword)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+	user.Password = hashPW
 
-	return c.JSON(http.StatusAccepted, map[string]string{"test done!": savepassword})
+	if err := db.Create(&user); err.Error != nil {
+		return c.JSON(http.StatusBadRequest, "failed Sign Up")
+	}
+	return c.JSON(http.StatusAccepted, user)
 }
