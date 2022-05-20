@@ -38,12 +38,12 @@ func SignUp(c echo.Context) error {
 	}
 	hashPW, err := module.HashPassword(savepassword)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, "fail hashing PW")
 	}
 	user.Password = hashPW
 
 	if err := db.Create(&user); err.Error != nil {
 		return c.JSON(http.StatusBadRequest, "failed Sign Up")
 	}
-	return c.JSON(http.StatusAccepted, user)
+	return c.JSON(http.StatusOK, user)
 }
