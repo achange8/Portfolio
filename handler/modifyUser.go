@@ -17,12 +17,16 @@ func Modifyuser(c echo.Context) error {
 			"message": "failed bind request",
 		})
 	}
+	saveEmail := user.Email
+	saveId := user.Id
+	savePW := user.Password
 	id := db.Find(user, "id=?", user.Id)
 	if id.RowsAffected != 0 {
-		return c.JSON(http.StatusBadRequest, "existing id")
+		return c.JSON(http.StatusBadRequest, "existing id!")
 	}
-	db.Model(&user).Where("email = ?", user.Email).
-		Updates(map[string]interface{}{"id": user.Id, "password": user.Password})
 
-	return c.JSON(http.StatusOK, "user modify done!")
+	db.Model(&user).Where("email = ?", saveEmail).
+		Updates(map[string]interface{}{"id": saveId, "password": savePW})
+
+	return c.JSON(http.StatusOK, user)
 }
