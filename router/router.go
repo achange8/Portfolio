@@ -11,7 +11,7 @@ func New() *echo.Echo {
 
 	e.GET("/", handler.Test)
 	e.POST("/signUp", handler.SignUp)
-
+	e.PATCH("/modifyUser", handler.Modifyuser)
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
