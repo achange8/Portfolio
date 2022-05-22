@@ -21,11 +21,11 @@ func Modifyuser(c echo.Context) error {
 	saveEmail := user.Email
 	saveId := user.Id
 	savePW := user.Password
+
 	id := db.Raw("SELECT * FROM users WHERE id = ?", user.Id).Scan(&user)
 	if id.RowsAffected != 0 {
 		fmt.Println(user)
 		return c.JSON(http.StatusConflict, "ID already exists!")
-
 	}
 
 	db.Model(&user).Where("email = ?", saveEmail).

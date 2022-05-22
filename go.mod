@@ -3,6 +3,7 @@ module github.com/achange8/Portfolio
 go 1.17
 
 require (
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/joho/godotenv v1.4.0
 	github.com/labstack/echo v3.3.10+incompatible
 	golang.org/x/crypto v0.0.0-20220518034528-6f7dac969898
