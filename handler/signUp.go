@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 	"regexp"
 
@@ -25,24 +24,20 @@ func SignUp(c echo.Context) error {
 	if validID.MatchString(user.Id) {
 		return c.JSON(http.StatusBadRequest, "plz write A-Za-z0-9")
 	}
-	fmt.Println(user)
 	id := db.Raw("SELECT * FROM users WHERE id = ?", user.Id).Scan(&user)
 	if id.RowsAffected != 0 {
-		fmt.Println(user)
 		return c.JSON(http.StatusConflict, "ID already exists!")
-
 	}
-
-	fmt.Println(user)
 	validEmail, _ := regexp.Compile("^[_A-Za-z0-9+-.]+@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$")
 	if validEmail.MatchString(saveEmail) == false {
 		return c.JSON(http.StatusBadRequest, "plz write right email!")
 	}
-	//email := db.Find(user, "email=?", saveEmail).Scan(&user)
 	email := db.Raw("SELECT * FROM users WHERE email = ?", saveEmail).Scan(&user)
 	if email.RowsAffected != 0 {
-		fmt.Println(user)
 		return c.JSON(http.StatusConflict, "Email already exists!")
+	}
+	if savepassword == " " {
+		return c.JSON(http.StatusBadRequest, "bad password")
 	}
 	hashPW, err := module.HashPassword(savepassword)
 	if err != nil {
@@ -55,5 +50,3 @@ func SignUp(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, user)
 }
-
-//result := db.Raw("SELECT * FROM users WHERE email = ?", user.Email).Scan(&user)
