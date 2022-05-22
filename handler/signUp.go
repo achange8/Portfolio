@@ -29,7 +29,7 @@ func SignUp(c echo.Context) error {
 	id := db.Raw("SELECT * FROM users WHERE id = ?", user.Id).Scan(&user)
 	if id.RowsAffected != 0 {
 		fmt.Println(user)
-		return c.JSON(http.StatusForbidden, "ID already exists!")
+		return c.JSON(http.StatusConflict, "ID already exists!")
 
 	}
 
@@ -42,7 +42,7 @@ func SignUp(c echo.Context) error {
 	email := db.Raw("SELECT * FROM users WHERE email = ?", saveEmail).Scan(&user)
 	if email.RowsAffected != 0 {
 		fmt.Println(user)
-		return c.JSON(http.StatusForbidden, "Email already exists!")
+		return c.JSON(http.StatusConflict, "Email already exists!")
 	}
 	hashPW, err := module.HashPassword(savepassword)
 	if err != nil {
