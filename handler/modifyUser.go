@@ -53,6 +53,8 @@ func Modifyuser(c echo.Context) error {
 		db.Model(&user).Where("email = ?", saveEmail).
 			Updates(map[string]interface{}{"id": saveId, "password": pw})
 	}
+	fmt.Println(user)
+	db.Raw("SELECT * FROM users WHERE id = ?", user.Id).Scan(&user)
 
 	return c.JSON(http.StatusOK, user)
 }
