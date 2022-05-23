@@ -40,8 +40,28 @@ func SignIn(c echo.Context) error {
 	if err != nil {
 		log.Println("err creating access token!")
 	}
+	refreshtoken, err := module.CreateRefreshToken(user.Id)
+	if err != nil {
+		log.Println("err creating refresh token!")
+	}
+	accessCookie := module.CreateAccCookie(user.Id, accesstoken)
+	c.SetCookie(accessCookie)
+	refreshCookie := module.CreateRefreCookie(user.Id, refreshtoken)
+	c.SetCookie(refreshCookie)
+	refresh := new(module.Refresh)
+	id = db.Find(&refresh, "id=?", user.Id)
+	if id.RowsAffected != 0 {
+		db.Model(&refresh).Where("id =?", user.Id).Update("reftoken", refreshtoken)
+		// UPDATE refreshes SET `reftoken` = RefreshToken WHERE id = user.Id
+	} else {
+		refresh.Id = user.Id
+		refresh.Reftoken = refreshtoken
+		db.Create(&refresh)
+	}
 
-	//create access token doen
-	//todos = create RF token, ac,rf cookies
-	return c.JSON(http.StatusOK, accesstoken)
+	return c.JSON(http.StatusOK,
+		map[string]string{
+			"message":      "ok",
+			"accesstoken":  accesstoken,
+			"refreshtoken": refreshtoken})
 }
