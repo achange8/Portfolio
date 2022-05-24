@@ -12,7 +12,7 @@ func New() *echo.Echo {
 	e.GET("/", handler.Test)
 	e.POST("/signUp", handler.SignUp) //done
 	e.POST("/signIn", handler.SignIn)
-	e.POST("/userPage", handler.Modifyuser)
+	e.POST("/userPage", handler.ModifyID)
 	e.POST("/duplicate", handler.DuplCheck) //done
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())

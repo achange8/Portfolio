@@ -12,5 +12,5 @@ func main() {
 
 	e := router.New()
 
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(":8082"))
 }

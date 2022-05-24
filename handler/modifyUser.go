@@ -13,7 +13,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-func Modifyuser(c echo.Context) error {
+func ModifyID(c echo.Context) error {
 	db := db.Connect()
 	user := new(module.User)
 	err := c.Bind(user)
@@ -22,9 +22,8 @@ func Modifyuser(c echo.Context) error {
 			"message": "failed bind request",
 		})
 	}
-	saveEmail := user.Email
-	saveId := user.Id
-	savePW := user.Password
+	fmt.Println(user)
+	changeId := user.Id
 	envERR := godotenv.Load("db.env")
 	if envERR != nil {
 		log.Println("Could not load .env file")
@@ -44,17 +43,11 @@ func Modifyuser(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, "jwt not allowed")
 	}
-	fmt.Println("parse done")
-	id := db.Raw("SELECT * FROM users WHERE id = ?", user.Id).Scan(&user)
-	if id.RowsAffected != 0 {
-		return c.JSON(http.StatusConflict, "ID already exists!")
-	} else {
-		pw, _ := module.HashPassword(savePW)
-		db.Model(&user).Where("email = ?", saveEmail).
-			Updates(map[string]interface{}{"id": saveId, "password": pw})
+	if !module.Duplicate(changeId) {
+		return c.JSON(http.StatusBadRequest, "ID already exists!")
 	}
-	fmt.Println(user)
-	db.Raw("SELECT * FROM users WHERE id = ?", user.Id).Scan(&user)
+
+	db.Raw("UPDATE users SET id = ? WHERE id = ?", changeId, refreshClaims.Id).Scan(&user)
 
 	return c.JSON(http.StatusOK, user)
 }
