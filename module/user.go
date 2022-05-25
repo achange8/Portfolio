@@ -10,3 +10,8 @@ type Refresh struct {
 	Id       string
 	Reftoken string
 }
+
+type ChangePWform struct {
+	OldPW string
+	NewPW string
+}

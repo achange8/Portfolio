@@ -83,7 +83,6 @@ func ModifyPW(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, "jwt not allowed")
 	}
-	RealUserID := refreshClaims.Id
 	db.Find(&user, "user = ?", refreshClaims.Id).Scan(user)
 	db.Raw("UPDATE users SET PW = ? WHERE PW = ?", changePW, refreshClaims.Id).Scan(&user)
 
