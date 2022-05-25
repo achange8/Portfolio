@@ -11,6 +11,7 @@ import (
 )
 
 //check id,pw and give ac,rf token
+//POST localhost/signin
 func SignIn(c echo.Context) error {
 	db := db.Connect()
 	user := new(module.User)
@@ -51,7 +52,9 @@ func SignIn(c echo.Context) error {
 	refresh := new(module.Refresh)
 	id = db.Find(&refresh, "id=?", user.Id)
 	if id.RowsAffected != 0 {
-		db.Model(&refresh).Where("id =?", user.Id).Update("reftoken", refreshtoken)
+		//db.Model(&refresh).Where("id =?", user.Id).Update("reftoken", refreshtoken)
+		db.Raw("UPDATE refreshes SET reftoken = ? WHERE id = ?", refreshtoken, user.Id).Scan(&user)
+
 		// UPDATE refreshes SET `reftoken` = RefreshToken WHERE id = user.Id
 	} else {
 		refresh.Id = user.Id
