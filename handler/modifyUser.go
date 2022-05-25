@@ -50,20 +50,19 @@ func ModifyID(c echo.Context) error {
 
 	db.Raw("UPDATE users SET id = ? WHERE id = ?", changeId, refreshClaims.Id).Scan(&user)
 
-	return c.JSON(http.StatusOK, user)
+	return c.JSON(http.StatusOK, "ID change done")
 }
 
 //change PW
 func ModifyPW(c echo.Context) error {
 	db := db.Connect()
-	user := new(module.User) //include change PW
-	err := c.Bind(user)
+	PWform := new(module.ChangePWform) //include change PW
+	err := c.Bind(PWform)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"message": "failed bind request",
 		})
 	}
-	changePW := user.Password
 	envERR := godotenv.Load("db.env")
 	if envERR != nil {
 		log.Println("Could not load .env file")
@@ -83,8 +82,19 @@ func ModifyPW(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, "jwt not allowed")
 	}
-	db.Find(&user, "user = ?", refreshClaims.Id).Scan(user)
-	db.Raw("UPDATE users SET PW = ? WHERE PW = ?", changePW, refreshClaims.Id).Scan(&user)
 
-	return c.JSON(http.StatusOK, user)
+	//todos
+	//새로운 구조체로 json 입력받아서 파싱처리 done
+	// db에서 ref token 값, 입력받은 pw 해쉬값 비교
+	//일치하면 users pw를 바꿀 pw로 변경
+	user := new(module.User)
+	db.Find(&user, "user = ?", refreshClaims.Id).Scan(user)
+	checkpw := module.CheckPW_Hash(user.Password, PWform.OldPW)
+	if !checkpw {
+		return c.JSON(http.StatusUnauthorized, "wrong password")
+	}
+	hashNewPW, _ := module.HashPassword(PWform.NewPW)
+	db.Raw("UPDATE users SET password = ? WHERE password = ?", hashNewPW, user.Password).Scan(&user)
+
+	return c.JSON(http.StatusOK, "PW change Done")
 }
