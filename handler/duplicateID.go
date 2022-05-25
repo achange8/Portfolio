@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-func DuplCheck(c echo.Context) error {
+func DuplCheckID(c echo.Context) error {
 	db := db.Connect()
 	user := new(module.User)
 	err := c.Bind(user)

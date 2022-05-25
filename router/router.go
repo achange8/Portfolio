@@ -13,7 +13,7 @@ func New() *echo.Echo {
 	e.POST("/signUp", handler.SignUp) //done
 	e.POST("/signIn", handler.SignIn)
 	e.POST("/userPage", handler.ModifyID)
-	e.POST("/duplicate", handler.DuplCheck) //done
+	e.POST("/duplicate", handler.DuplCheckID) //done
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
