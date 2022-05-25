@@ -12,6 +12,6 @@ type Refresh struct {
 }
 
 type ChangePWform struct {
-	OldPW string
-	NewPW string
+	Oldpw string
+	Newpw string
 }

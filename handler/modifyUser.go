@@ -88,12 +88,12 @@ func ModifyPW(c echo.Context) error {
 	// db에서 ref token 값, 입력받은 pw 해쉬값 비교
 	//일치하면 users pw를 바꿀 pw로 변경
 	user := new(module.User)
-	db.Find(&user, "user = ?", refreshClaims.Id).Scan(user)
-	checkpw := module.CheckPW_Hash(user.Password, PWform.OldPW)
+	db.Find(&user, "id = ?", refreshClaims.Id).Scan(user)
+	checkpw := module.CheckPW_Hash(user.Password, PWform.Oldpw)
 	if !checkpw {
 		return c.JSON(http.StatusUnauthorized, "wrong password")
 	}
-	hashNewPW, _ := module.HashPassword(PWform.NewPW)
+	hashNewPW, _ := module.HashPassword(PWform.Newpw)
 	db.Raw("UPDATE users SET password = ? WHERE password = ?", hashNewPW, user.Password).Scan(&user)
 
 	return c.JSON(http.StatusOK, "PW change Done")
