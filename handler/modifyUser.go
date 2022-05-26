@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -23,7 +22,6 @@ func ModifyID(c echo.Context) error {
 			"message": "failed bind request",
 		})
 	}
-	fmt.Println(user)
 	changeId := user.Id
 	envERR := godotenv.Load("db.env")
 	if envERR != nil {

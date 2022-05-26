@@ -15,6 +15,7 @@ func New() *echo.Echo {
 	e.POST("/modifyID", handler.ModifyID)     //done
 	e.POST("/modifyPW", handler.ModifyPW)     //done
 	e.POST("/duplicate", handler.DuplCheckID) //done
+	e.GET("/signOut", handler.SignOut)        //done
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 

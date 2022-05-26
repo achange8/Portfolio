@@ -24,3 +24,23 @@ func CreateRefreCookie(userId string, RefreToken string) *http.Cookie {
 	refreshCookie.HttpOnly = true
 	return refreshCookie
 }
+
+func LogOutAccCookie() *http.Cookie {
+	accessCookie := new(http.Cookie)
+	accessCookie.Name = "accessCookie"
+	accessCookie.Value = ""
+	accessCookie.Expires = time.Now().Add(-time.Hour)
+	accessCookie.Path = "/"
+	accessCookie.HttpOnly = true
+	return accessCookie
+}
+
+func LogOutRefreCookie() *http.Cookie {
+	refreshCookie := new(http.Cookie)
+	refreshCookie.Name = "RefreCookie"
+	refreshCookie.Value = ""
+	refreshCookie.Expires = time.Now().Add(-time.Hour)
+	refreshCookie.Path = "/"
+	refreshCookie.HttpOnly = true
+	return refreshCookie
+}
