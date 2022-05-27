@@ -1,5 +1,11 @@
 package module
 
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
+
 type User struct {
 	Id       string
 	Email    string
@@ -14,4 +20,14 @@ type Refresh struct {
 type ChangePWform struct {
 	Oldpw string
 	Newpw string
+}
+
+type BOARD struct {
+	NUM       int `gorm:"primaryKey"`
+	TITLE     string
+	WRITER    string
+	CONTENT   string
+	CreatedAt time.Time
+	DeletedAt gorm.DeletedAt `gorm:"->:false;<-:create"`
+	HiTCOUNT  int
 }

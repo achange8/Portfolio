@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+//cookies funcs
+
 func CreateAccCookie(userId string, ACtoken string) *http.Cookie {
 	accessCookie := new(http.Cookie)
 	accessCookie.Name = "accessCookie"

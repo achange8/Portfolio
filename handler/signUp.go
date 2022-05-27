@@ -36,7 +36,7 @@ func SignUp(c echo.Context) error {
 	if email.RowsAffected != 0 {
 		return c.JSON(http.StatusConflict, "Email already exists!")
 	}
-	if savepassword == " " {
+	if savepassword == "" {
 		return c.JSON(http.StatusBadRequest, "bad password")
 	}
 	hashPW, err := module.HashPassword(savepassword)
