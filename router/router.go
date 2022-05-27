@@ -16,8 +16,8 @@ func New() *echo.Echo {
 	e.POST("/modifyID", handler.ModifyID)     //done
 	e.POST("/modifyPW", handler.ModifyPW)     //done
 	e.POST("/duplicate", handler.DuplCheckID) //done
-	e.POST("/write", handler.CreateBoard)
-	e.GET("/signOut", handler.SignOut) //done
+	e.POST("/write", handler.CreateBoard)     //testing
+	e.GET("/signOut", handler.SignOut)        //done
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"http://localhost:3000"},
