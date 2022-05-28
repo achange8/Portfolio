@@ -4,20 +4,24 @@ import (
 	"net/http"
 
 	"github.com/achange8/Portfolio/handler"
+	"github.com/achange8/Portfolio/middlewares"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
 
 func New() *echo.Echo {
 	e := echo.New()
+	g := e.Group("/board")
+	g.Use(middlewares.TokenCheckMiddleware)
+
 	e.GET("/", handler.Test)
 	e.POST("/signUp", handler.SignUp)         //done
 	e.POST("/signIn", handler.SignIn)         //done
 	e.POST("/modifyID", handler.ModifyID)     //done
 	e.POST("/modifyPW", handler.ModifyPW)     //done
 	e.POST("/duplicate", handler.DuplCheckID) //done
-	e.POST("/write", handler.CreateBoard)     //testing
 	e.GET("/signOut", handler.SignOut)        //done
+	g.POST("/write", handler.CreateBoard)     //testing
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"http://localhost:3000"},

@@ -15,7 +15,10 @@ import (
 func CreateBoard(c echo.Context) error {
 	cookie, err := c.Cookie("accessCookie")
 	if err != nil {
-		return c.JSON(http.StatusUnauthorized, "no cookie")
+		cookie, err = c.Cookie("RefreCookie")
+		if err != nil {
+			return c.JSON(http.StatusUnauthorized, "no cookies sign in again")
+		}
 	}
 	rawtoken := cookie.Value
 	token, err := jwt.Parse(rawtoken, nil)
