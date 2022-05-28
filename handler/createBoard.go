@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	db "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo"
@@ -14,7 +15,7 @@ import (
 func CreateBoard(c echo.Context) error {
 	cookie, err := c.Cookie("accessCookie")
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, "no cookie")
+		return c.JSON(http.StatusUnauthorized, "no cookie")
 	}
 	rawtoken := cookie.Value
 	token, err := jwt.Parse(rawtoken, nil)
@@ -24,5 +25,11 @@ func CreateBoard(c echo.Context) error {
 	claims, _ := token.Claims.(jwt.MapClaims)
 	board := new(module.BOARD)
 	board.WRITER = claims["jti"].(string)
-	return c.JSON(http.StatusOK, board.WRITER)
+	err = c.Bind(board)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, "failed bind board")
+	}
+	db := db.Connect()
+	db.Create(&board)
+	return c.JSON(http.StatusOK, board)
 }
