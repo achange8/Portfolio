@@ -34,5 +34,5 @@ func CreateBoard(c echo.Context) error {
 	}
 	db := db.Connect()
 	db.Create(&board)
-	return c.JSON(http.StatusOK, board)
+	return c.JSON(http.StatusOK, "write board done")
 }

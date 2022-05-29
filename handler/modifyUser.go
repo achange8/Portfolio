@@ -80,11 +80,6 @@ func ModifyPW(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, "jwt not allowed")
 	}
-
-	//todos
-	//새로운 구조체로 json 입력받아서 파싱처리 done
-	// db에서 ref token 값, 입력받은 pw 해쉬값 비교
-	//일치하면 users pw를 바꿀 pw로 변경
 	user := new(module.User)
 	db.Find(&user, "id = ?", refreshClaims.Id).Scan(user)
 	checkpw := module.CheckPW_Hash(user.Password, PWform.Oldpw)

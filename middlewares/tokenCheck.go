@@ -13,8 +13,8 @@ import (
 	"github.com/labstack/echo"
 )
 
-//log in check access token
-//if dont have ac token, look up ref token
+//log in check ACToken
+//if dont have ACToken, look up RefToken
 //if have ref token, recreate ac token else return status unhorized
 func TokenCheckMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
@@ -26,7 +26,6 @@ func TokenCheckMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		cookie, err := c.Cookie("accessCookie")
 		//if have access token
 		if err == nil {
-			fmt.Println("if middleware in")
 			rawtoken := cookie.Value
 			clamis := &jwt.StandardClaims{}
 			_, err := jwt.ParseWithClaims(rawtoken, clamis, func(t *jwt.Token) (interface{}, error) {
@@ -37,8 +36,7 @@ func TokenCheckMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 			}
 			return next(c)
 		} else {
-			//dont have access token
-			fmt.Println("else middleware in")
+			//if dont have access token, check ref token
 			cookie, err := c.Cookie("RefreCookie")
 			if err != nil {
 				c.JSON(http.StatusUnauthorized, "you dont have reftoken")
@@ -55,13 +53,13 @@ func TokenCheckMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 			db := db.Connect()
 			refresh := new(module.Refresh)
 			db.Find(&refresh, "reftoken=?", rawtoken).Scan(&refresh)
+			fmt.Println(refresh)
 			if refresh.Id != claims.Id {
 				return c.JSON(http.StatusUnauthorized, "Do signin again")
 			} else {
 				newtoken, _ := module.CreateAccToken(claims.Id)
 				cookie := module.CreateAccCookie(claims.Id, newtoken)
 				c.SetCookie(cookie)
-				fmt.Println("we set cookie")
 
 				return next(c)
 			}
