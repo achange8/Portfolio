@@ -8,6 +8,8 @@ import (
 	"github.com/labstack/echo"
 )
 
+//method get
+//api /readboard
 func ReadBoard(c echo.Context) error {
 	var list []module.BOARD
 	db := db.Connect()
