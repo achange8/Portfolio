@@ -46,3 +46,13 @@ func LogOutRefreCookie() *http.Cookie {
 	refreshCookie.HttpOnly = true
 	return refreshCookie
 }
+
+func CreateViewCookie(num string) *http.Cookie {
+	viewCookie := new(http.Cookie)
+	viewCookie.Name = "viewCookie"
+	viewCookie.Value = num
+	viewCookie.Expires = time.Now().Add(30 * time.Minute)
+	viewCookie.Path = "/"
+	viewCookie.HttpOnly = true
+	return viewCookie
+}

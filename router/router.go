@@ -22,8 +22,9 @@ func New() *echo.Echo {
 	e.POST("/duplicate", handler.DuplCheckID) //done
 	e.GET("/signOut", handler.SignOut)        //done
 	g.POST("/write", handler.CreateBoard)     //done
-	e.GET("/readBoard", handler.ReadBoard)
-	g.POST("/modify/", handler.UpdateBoard)
+	e.GET("/listBoard", handler.ListBoard)    //done
+	e.POST("/readBoard/", handler.ReadBoard)  //testing
+	g.POST("/modify/", handler.UpdateBoard)   //done
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"http://localhost:3000"},
 		AllowMethods:     []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
