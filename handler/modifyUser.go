@@ -46,7 +46,7 @@ func ModifyID(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "ID already exists!")
 	}
 
-	db.Raw("UPDATE users SET id = ? WHERE id = ?", changeId, refreshClaims.Id).Scan(&user)
+	db.Raw("UPDATE users SET id = ? WHERE id = ?", changeId, refreshClaims.Id)
 
 	return c.JSON(http.StatusOK, "ID change done")
 }
@@ -87,7 +87,7 @@ func ModifyPW(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, "wrong password")
 	}
 	hashNewPW, _ := module.HashPassword(PWform.Newpw)
-	db.Raw("UPDATE users SET password = ? WHERE password = ?", hashNewPW, user.Password).Scan(&user)
+	db.Raw("UPDATE users SET password = ? WHERE password = ?", hashNewPW, user.Password)
 
 	return c.JSON(http.StatusOK, "PW change Done")
 }
