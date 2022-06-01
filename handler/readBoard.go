@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strings"
 
+	db "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/labstack/echo"
 )
@@ -12,11 +13,14 @@ import (
 //api:  /read/?id=num
 func ReadBoard(c echo.Context) error {
 	id := c.QueryParam("id")
+	board := new(module.BOARD)
 	viewcookie, err := c.Cookie("viewCookie")
 	if err != nil {
 		viewcookie = module.CreateViewCookie(id)
 		c.SetCookie(viewcookie)
-		return c.JSON(http.StatusOK, "make new cookie")
+		db := db.Connect()
+		db.Raw("UPDATE boards SET hi_tcount = ? WHERE NUM = ?", +1, id).Scan(board)
+		return c.JSON(http.StatusOK, "make new cookie, view +1")
 	}
 	viewdata := strings.Split(viewcookie.Value, ",")
 	result := check(viewdata, id)
@@ -24,10 +28,9 @@ func ReadBoard(c echo.Context) error {
 		newview := viewcookie.Value + "," + id
 		viewcookie = module.CreateViewCookie(newview)
 		c.SetCookie(viewcookie)
-		return c.JSON(http.StatusOK, map[string]string{
-			"type":  "reset view cookie",
-			"value": newview,
-		})
+		db := db.Connect()
+		db.Raw("UPDATE boards SET hi_tcount = ? WHERE NUM = ?", +1, id).Scan(board)
+		return c.JSON(http.StatusOK, "reset cookie, view +1")
 	}
 	return c.JSON(http.StatusOK, "view +0")
 }
