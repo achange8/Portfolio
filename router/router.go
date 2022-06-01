@@ -23,7 +23,7 @@ func New() *echo.Echo {
 	e.GET("/signOut", handler.SignOut)        //done
 	g.POST("/write", handler.CreateBoard)     //done
 	e.GET("/listBoard", handler.ListBoard)    //done
-	e.POST("/readBoard/", handler.ReadBoard)  //testing
+	e.GET("/readBoard/", handler.ReadBoard)   //testing
 	g.POST("/modify/", handler.UpdateBoard)   //done
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"http://localhost:3000"},

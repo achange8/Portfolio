@@ -7,6 +7,8 @@ import (
 	db "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/labstack/echo"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 //method : POST
@@ -19,8 +21,9 @@ func ReadBoard(c echo.Context) error {
 		viewcookie = module.CreateViewCookie(id)
 		c.SetCookie(viewcookie)
 		db := db.Connect()
-		db.Raw("UPDATE boards SET hi_tcount = ? WHERE NUM = ?", +1, id).Scan(board)
-		return c.JSON(http.StatusOK, "make new cookie, view +1")
+		db.Model(&board).Clauses(clause.Returning{}).Where("NUM = ?", id).Update("hi_tcount", gorm.Expr("hi_tcount + ?", 1)).Scan(board)
+
+		return c.JSON(http.StatusOK, board)
 	}
 	viewdata := strings.Split(viewcookie.Value, ",")
 	result := check(viewdata, id)
@@ -29,10 +32,13 @@ func ReadBoard(c echo.Context) error {
 		viewcookie = module.CreateViewCookie(newview)
 		c.SetCookie(viewcookie)
 		db := db.Connect()
-		db.Raw("UPDATE boards SET hi_tcount = ? WHERE NUM = ?", +1, id).Scan(board)
-		return c.JSON(http.StatusOK, "reset cookie, view +1")
+		db.Model(&board).Clauses(clause.Returning{}).Where("NUM = ?", id).Update("hi_tcount", gorm.Expr("hi_tcount + ?", 1)).Scan(board)
+
+		return c.JSON(http.StatusOK, board)
 	}
-	return c.JSON(http.StatusOK, "view +0")
+	db := db.Connect()
+	db.Find(&board, "NUM =?", id).Scan(board)
+	return c.JSON(http.StatusOK, board)
 }
 
 func check(view []string, id string) bool {
