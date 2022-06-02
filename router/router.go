@@ -9,8 +9,9 @@ import (
 	"github.com/labstack/echo/middleware"
 )
 
-//board crud
-//user curd
+//board crud done
+//user curd	done
+//oauth google login not done
 func New() *echo.Echo {
 	e := echo.New()
 	g := e.Group("/board")
@@ -35,7 +36,8 @@ func New() *echo.Echo {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.DELETE("/user", handler.UserDelete) //coding not testing
+	e.DELETE("/user", handler.UserDelete) //testing
+	e.GET("/auth/goolge/login", handler.GoogleLogin)
 
 	return e
 }
