@@ -12,7 +12,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-//method post localhost/signout
+//method get localhost/signout
 func SignOut(c echo.Context) error {
 	cookie, err := c.Cookie("RefreCookie")
 	if err != nil {

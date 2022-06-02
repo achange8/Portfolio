@@ -9,6 +9,8 @@ import (
 	"github.com/labstack/echo/middleware"
 )
 
+//board crud
+//user curd
 func New() *echo.Echo {
 	e := echo.New()
 	g := e.Group("/board")
@@ -32,6 +34,8 @@ func New() *echo.Echo {
 	})) //CORS setting
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+
+	e.DELETE("/user", handler.UserDelete) //coding not testing
 
 	return e
 }
