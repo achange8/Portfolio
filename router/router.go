@@ -38,6 +38,7 @@ func New() *echo.Echo {
 
 	e.DELETE("/user", handler.UserDelete) //testing
 	e.GET("/auth/goolge/login", handler.GoogleLogin)
+	e.GET("/auth/goolge/callback", handler.GoogleCallBack)
 
 	return e
 }
