@@ -36,9 +36,9 @@ func New() *echo.Echo {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.DELETE("/user", handler.UserDelete) //testing
-	e.GET("/auth/google/login", handler.GoogleLogin)
-	e.GET("/auth/google/callback", handler.GoogleCallBack)
+	e.DELETE("/user", handler.UserDelete)                  //done
+	e.GET("/auth/google/login", handler.GoogleLogin)       //done
+	e.GET("/auth/google/callback", handler.GoogleCallBack) //user info callback done
 
 	return e
 }
