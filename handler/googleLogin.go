@@ -59,6 +59,8 @@ func oauthCookie(c echo.Context) string {
 	return state
 }
 
+//login google acount, get user info, give jwt cookie
+//not in db.users google user
 func GoogleCallBack(c echo.Context) error {
 	cookie, err := c.Cookie("oauthcookie")
 	if err != nil {

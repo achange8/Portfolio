@@ -11,7 +11,7 @@ import (
 
 //board crud done
 //user curd	done
-//oauth google login not done
+//oauth google login done
 func New() *echo.Echo {
 	e := echo.New()
 	g := e.Group("/board")
@@ -38,7 +38,7 @@ func New() *echo.Echo {
 
 	e.DELETE("/user", handler.UserDelete)                  //done
 	e.GET("/auth/google/login", handler.GoogleLogin)       //done
-	e.GET("/auth/google/callback", handler.GoogleCallBack) //user info callback done
+	e.GET("/auth/google/callback", handler.GoogleCallBack) //done
 
 	return e
 }
