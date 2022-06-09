@@ -29,7 +29,7 @@ func SignUp(c echo.Context) error {
 		return c.JSON(http.StatusConflict, "ID already exists!")
 	}
 	validEmail, _ := regexp.Compile("^[_A-Za-z0-9+-.]+@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$")
-	if validEmail.MatchString(saveEmail) == false {
+	if !validEmail.MatchString(saveEmail) {
 		return c.JSON(http.StatusBadRequest, "plz write right email!")
 	}
 	email := db.Raw("SELECT * FROM users WHERE email = ?", saveEmail).Scan(&user)
