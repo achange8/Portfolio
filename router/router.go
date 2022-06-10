@@ -28,7 +28,7 @@ func New() *echo.Echo {
 	e.GET("/listBoard", handler.ListBoard)    //done
 	e.GET("/readBoard/", handler.ReadBoard)   //done
 	g.POST("/modify/", handler.UpdateBoard)   //done
-	g.DELETE("/delete/", handler.DeleteBoard) // coding
+	g.DELETE("/delete/", handler.DeleteBoard) // done
 	e.DELETE("/user", handler.UserDelete)     //done
 	///for test user info///
 	e.GET("/allUser", handler.GetAllUsers) //done
