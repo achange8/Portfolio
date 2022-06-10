@@ -28,6 +28,12 @@ func New() *echo.Echo {
 	e.GET("/listBoard", handler.ListBoard)    //done
 	e.GET("/readBoard/", handler.ReadBoard)   //done
 	g.POST("/modify/", handler.UpdateBoard)   //done
+	g.DELETE("/delete/", handler.DeleteBoard) // coding
+	e.DELETE("/user", handler.UserDelete)     //done
+	///for test user info///
+	e.GET("/allUser", handler.GetAllUsers) //done
+	////
+
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"http://localhost:3000"},
 		AllowMethods:     []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
@@ -36,7 +42,7 @@ func New() *echo.Echo {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.DELETE("/user", handler.UserDelete)                  //done
+	//Google Oauth login
 	e.GET("/auth/google/login", handler.GoogleLogin)       //done
 	e.GET("/auth/google/callback", handler.GoogleCallBack) //done
 

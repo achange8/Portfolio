@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo"
 )
 
+//get user email if same email in db, delete user(hard delete)
 func UserDelete(c echo.Context) error {
 	user := new(module.User)
 	err := c.Bind(user)

@@ -9,6 +9,8 @@ import (
 	"github.com/labstack/echo"
 )
 
+//POST
+//localhost:8082/signUp
 func SignUp(c echo.Context) error {
 	db := db.Connect()
 	user := new(module.User)
