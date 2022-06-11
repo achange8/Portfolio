@@ -12,6 +12,7 @@ import (
 //board crud done
 //user curd	done
 //oauth google login done
+//todos : search api
 func New() *echo.Echo {
 	e := echo.New()
 	g := e.Group("/board")
@@ -32,6 +33,7 @@ func New() *echo.Echo {
 	e.DELETE("/user", handler.UserDelete)     //done
 	///for test user info///
 	e.GET("/allUser", handler.GetAllUsers) //done
+	e.GET("/search", handler.SearchBoard)
 	////
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
