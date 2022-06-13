@@ -3,6 +3,8 @@ package handler
 import (
 	"net/http"
 
+	db "github.com/achange8/Portfolio/DB"
+	"github.com/achange8/Portfolio/module"
 	"github.com/labstack/echo"
 )
 
@@ -11,29 +13,27 @@ import (
 func SearchBoard(c echo.Context) error {
 	s_type := c.QueryParam("type")
 	s_keyword := c.QueryParam("s_keyword")
+	var boards []module.BOARD
 
 	switch s_type {
+	//title + content
 	case "title_content":
-		return c.JSON(http.StatusOK, map[string]string{
-			"s_type":    "title_content",
-			"s_keyword": s_keyword,
-		})
+		db := db.Connect()
+		db.Where("TITLE LIKE ?", "%"+s_keyword+"%").Or("CONTENT LIKE ?", "%"+s_keyword+"%").Find(&boards)
+		return c.JSON(http.StatusOK, boards)
 
 	case "title":
-		return c.JSON(http.StatusOK, map[string]string{
-			"s_type":    "title",
-			"s_keyword": s_keyword,
-		})
+		db := db.Connect()
+		db.Where("TITLE LIKE ?", "%"+s_keyword+"%").Find(&boards)
+		return c.JSON(http.StatusOK, boards)
 	case "content":
-		return c.JSON(http.StatusOK, map[string]string{
-			"s_type":    "content",
-			"s_keyword": s_keyword,
-		})
+		db := db.Connect()
+		db.Where("CONTENT LIKE ?", "%"+s_keyword+"%").Find(&boards)
+		return c.JSON(http.StatusOK, boards)
 	case "witer":
-		return c.JSON(http.StatusOK, map[string]string{
-			"s_type":    "witer",
-			"s_keyword": s_keyword,
-		})
+		db := db.Connect()
+		db.Where("WITER = ?", "%"+s_keyword+"%").Find(&boards)
+		return c.JSON(http.StatusOK, boards)
 	}
 	return c.JSON(http.StatusBadRequest, "bad request")
 }
