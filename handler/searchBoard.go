@@ -8,8 +8,9 @@ import (
 	"github.com/labstack/echo"
 )
 
-//search type , keywords in db and return contents []
-//s_type case : title+content, title, content, writer
+//search type , keywords in db and return contents [] /done
+//s_type case : title+content, title, content, writer /done
+//paging  	/not done
 func SearchBoard(c echo.Context) error {
 	s_type := c.QueryParam("type")
 	s_keyword := c.QueryParam("s_keyword")
@@ -20,6 +21,7 @@ func SearchBoard(c echo.Context) error {
 	case "title_content":
 		db := db.Connect()
 		db.Where("TITLE LIKE ?", "%"+s_keyword+"%").Or("CONTENT LIKE ?", "%"+s_keyword+"%").Find(&boards)
+		//should paging 1,2,...
 		return c.JSON(http.StatusOK, boards)
 
 	case "title":
