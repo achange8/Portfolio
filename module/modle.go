@@ -7,6 +7,7 @@ import (
 )
 
 type User struct {
+	P_id     int `gorm:"autoIncrement`
 	Id       string
 	Email    string
 	Password string
