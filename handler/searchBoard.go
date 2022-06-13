@@ -34,7 +34,7 @@ func SearchBoard(c echo.Context) error {
 		return c.JSON(http.StatusOK, boards)
 	case "witer":
 		db := db.Connect()
-		db.Where("WITER = ?", "%"+s_keyword+"%").Find(&boards)
+		db.Where("WITER LIKE ?", "%"+s_keyword+"%").Find(&boards)
 		return c.JSON(http.StatusOK, boards)
 	}
 	return c.JSON(http.StatusBadRequest, "bad request")
