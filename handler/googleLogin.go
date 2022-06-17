@@ -106,6 +106,7 @@ func GoogleCallBack(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]string{
 		"split Email": id,
 		"RF Token":    RFtoken,
+		"p_id":        info.ID,
 	})
 
 }
