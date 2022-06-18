@@ -1,29 +1,35 @@
 package module
 
 import (
+	"fmt"
 	"io"
+	"net/http"
 	"os"
 
 	"github.com/labstack/echo"
 )
 
-func upload(c echo.Context) error {
+func Upload(c echo.Context) error {
 
 	form, err := c.MultipartForm()
 	if err != nil {
 		return err
 	}
+	files := form.File["files"]
 
-	for _, file := range form.File {
+	for _, file := range files {
 		// Source
-		src, err := file[0].Open()
+		src, err := file.Open()
 		if err != nil {
 			return err
 		}
 		defer src.Close()
 
 		// Destination
-		dst, err := os.Create(file[0].Filename)
+		dirname := "./uploads"
+		os.MkdirAll(dirname, 0777)
+		filepath := fmt.Sprintf("%s/upload-%s", dirname, file.Filename)
+		dst, err := os.Create(filepath)
 		if err != nil {
 			return err
 		}
@@ -34,5 +40,5 @@ func upload(c echo.Context) error {
 			return err
 		}
 	}
-	return nil
+	return c.JSON(http.StatusOK, "done")
 }

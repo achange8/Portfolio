@@ -5,6 +5,7 @@ import (
 
 	"github.com/achange8/Portfolio/handler"
 	"github.com/achange8/Portfolio/middlewares"
+	"github.com/achange8/Portfolio/module"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -47,6 +48,8 @@ func New() *echo.Echo {
 	//Google Oauth login
 	e.GET("/auth/google/login", handler.GoogleLogin)       //done
 	e.GET("/auth/google/callback", handler.GoogleCallBack) //done
+
+	e.POST("/upload", module.Upload) // testing
 
 	return e
 }
