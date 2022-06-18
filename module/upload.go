@@ -1,6 +1,7 @@
 package module
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -16,6 +17,12 @@ func Upload(c echo.Context) error {
 		return err
 	}
 	files := form.File["files"]
+	jsondata := form.Value["data"]
+	var reading []User
+	err = json.Unmarshal([]byte(jsondata[0]), &reading)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	for _, file := range files {
 		// Source
@@ -40,5 +47,6 @@ func Upload(c echo.Context) error {
 			return err
 		}
 	}
-	return c.JSON(http.StatusOK, "done")
+
+	return c.JSON(http.StatusOK, reading[0])
 }

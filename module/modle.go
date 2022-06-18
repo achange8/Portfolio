@@ -8,9 +8,9 @@ import (
 
 type User struct {
 	P_id     int
-	Id       string
-	Email    string
-	Password string
+	Id       string `json:"id"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type Refresh struct {
