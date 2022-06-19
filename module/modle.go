@@ -24,10 +24,10 @@ type ChangePWform struct {
 }
 
 type BOARD struct {
-	NUM       int `gorm:"primaryKey"`
-	TITLE     string
-	WRITER    string
-	CONTENT   string
+	NUM       int    `gorm:"primaryKey"`
+	TITLE     string `json:"TITLE"`
+	WRITER    string `json:"WRITER"`
+	CONTENT   string `json:"CONTENT"`
 	CreatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"->:false;<-:create"`
 	HiTCOUNT  int

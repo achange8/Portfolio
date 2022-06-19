@@ -13,7 +13,7 @@ import (
 
 //method : GET
 //api:  /read/?id=num
-// lookup viewcookie value, view +1, scan board return board val
+// lookup viewcookie value, view +1, scan board, return board val
 //view history in cookie value
 func ReadBoard(c echo.Context) error {
 	id := c.QueryParam("id")

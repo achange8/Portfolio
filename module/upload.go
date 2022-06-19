@@ -18,8 +18,8 @@ func Upload(c echo.Context) error {
 	}
 	files := form.File["files"]
 	jsondata := form.Value["data"]
-	var reading []User
-	err = json.Unmarshal([]byte(jsondata[0]), &reading)
+	var board User
+	err = json.Unmarshal([]byte(jsondata[0]), &board)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -48,5 +48,5 @@ func Upload(c echo.Context) error {
 		}
 	}
 
-	return c.JSON(http.StatusOK, reading[0])
+	return c.JSON(http.StatusOK, board)
 }

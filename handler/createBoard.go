@@ -1,7 +1,11 @@
 package handler
 
 import (
+	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
+	"os"
 
 	db "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
@@ -11,7 +15,8 @@ import (
 
 //check token in middleware, make token
 //click write button, work this api
-//method : POST
+//method : POST ,form-data, "files","data".
+//data in content, title.
 func CreateBoard(c echo.Context) error {
 	cookie, err := c.Cookie("accessCookie")
 	if err != nil {
@@ -25,14 +30,46 @@ func CreateBoard(c echo.Context) error {
 	if err == nil {
 		return err
 	}
-	claims, _ := token.Claims.(jwt.MapClaims)
-	board := new(module.BOARD)
-	board.WRITER = claims["jti"].(string)
-	err = c.Bind(board)
+	form, err := c.MultipartForm()
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, "failed bind board")
+		return err
 	}
+	files := form.File["files"]
+	jsondata := form.Value["data"]
+	var board module.BOARD
+	err = json.Unmarshal([]byte(jsondata[0]), &board)
+	if err != nil {
+		fmt.Println(err)
+	}
+	claims, _ := token.Claims.(jwt.MapClaims)
+	board.WRITER = claims["jti"].(string)
 	db := db.Connect()
 	db.Create(&board)
-	return c.JSON(http.StatusOK, "write board done")
+
+	for _, file := range files {
+		// Source
+		src, err := file.Open()
+		if err != nil {
+			return err
+		}
+		defer src.Close()
+
+		// Destination
+		dirpath := fmt.Sprintf("%d", board.NUM)
+		dirname := "./uploads/" + dirpath
+		os.MkdirAll(dirname, 0777)
+		filepath := fmt.Sprintf("%s/%s", dirname, file.Filename)
+		dst, err := os.Create(filepath)
+		if err != nil {
+			return err
+		}
+		defer dst.Close()
+
+		// Copy
+		if _, err = io.Copy(dst, src); err != nil {
+			return err
+		}
+	}
+
+	return c.JSON(http.StatusOK, board)
 }

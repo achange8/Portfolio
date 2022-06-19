@@ -34,7 +34,7 @@ func New() *echo.Echo {
 	e.DELETE("/user", handler.UserDelete)     //done
 	///for test user info///
 	e.GET("/allUser", handler.GetAllUsers) //done
-	e.GET("/search", handler.SearchBoard)
+	e.GET("/search", handler.SearchBoard)  // done
 	////
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -49,7 +49,9 @@ func New() *echo.Echo {
 	e.GET("/auth/google/login", handler.GoogleLogin)       //done
 	e.GET("/auth/google/callback", handler.GoogleCallBack) //done
 
-	e.POST("/upload", module.Upload) // testing
+	e.POST("/upload", module.Upload)          // done
+	e.GET("/download/", handler.DownLoadFile) // testing
+	e.GET("/load/", handler.LoadFile)
 
 	return e
 }
