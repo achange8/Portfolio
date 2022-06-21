@@ -22,7 +22,7 @@ func ListBoard(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "bad request")
 	}
 	db := db.Connect()
-	result := db.Table("boards").Find(&list)
+	result := db.Table("boards").Order("NUM desc").Find(&list)
 	total := result.RowsAffected
 	println(total)
 	pages := int(total) / 10
