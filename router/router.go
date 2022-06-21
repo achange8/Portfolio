@@ -27,7 +27,7 @@ func New() *echo.Echo {
 	e.POST("/duplicate", handler.DuplCheckID) //done
 	e.GET("/signOut", handler.SignOut)        //done
 	g.POST("/write", handler.CreateBoard)     //done
-	e.GET("/listBoard", handler.ListBoard)    //done
+	e.GET("/list", handler.ListBoard)         //done
 	e.GET("/readBoard/", handler.ReadBoard)   //done
 	g.POST("/modify/", handler.UpdateBoard)   //done
 	g.DELETE("/delete/", handler.DeleteBoard) // done

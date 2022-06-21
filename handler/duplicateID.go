@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo"
 )
 
+//check id
 func DuplCheckID(c echo.Context) error {
 	db := db.Connect()
 	user := new(module.User)
