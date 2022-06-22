@@ -32,3 +32,8 @@ type BOARD struct {
 	DeletedAt gorm.DeletedAt `gorm:"->:false;<-:create"`
 	HiTCOUNT  int
 }
+
+type ListBoard struct {
+	Board    []BOARD
+	Lastpage int
+}

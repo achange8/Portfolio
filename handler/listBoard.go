@@ -30,6 +30,6 @@ func ListBoard(c echo.Context) error {
 	if n == pages+1 {
 		end = int(total) % 10
 	}
-
+	// should return total pages, now list page board
 	return c.JSON(http.StatusOK, list[(n-1)*10:10*(n-1)+end])
 }
