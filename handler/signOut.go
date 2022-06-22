@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	db "github.com/achange8/Portfolio/DB"
+	database "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/golang-jwt/jwt"
 	"github.com/joho/godotenv"
@@ -35,7 +35,7 @@ func SignOut(c echo.Context) error {
 			return c.JSON(http.StatusUnauthorized, "jwt not allowed")
 		}
 		//delete reftoken in db
-		db := db.Connect()
+		db := database.DB
 		result := db.Find(&refresh, "reftoken=?", token)
 		if result.RowsAffected != 0 { //todo go signin point
 			db.Where("reftoken = ?", token).Delete(&refresh)

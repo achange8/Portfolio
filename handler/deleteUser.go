@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	db "github.com/achange8/Portfolio/DB"
+	database "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo"
@@ -28,13 +28,13 @@ func UserDelete(c echo.Context) error {
 	token, _ := jwt.Parse(rawtoken, nil)
 	claims, _ := token.Claims.(jwt.MapClaims)
 	userid := claims["jti"].(string)
-	db := db.Connect()
-	db.Find(&user, "id=?", userid).Scan(user)
+
+	database.DB.Find(&user, "id=?", userid).Scan(user)
 	if user.Email != saveEmail {
 		return c.JSON(http.StatusUnauthorized, "not same email")
 	}
 	//DELETE from users where id = userid;
-	db.Where("id=?", userid).Delete(&user)
+	database.DB.Where("id=?", userid).Delete(&user)
 	logoutACcookie := module.LogOutAccCookie()
 	logoutRFcookie := module.LogOutRefreCookie()
 	c.SetCookie(logoutACcookie)

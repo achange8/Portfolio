@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"regexp"
 
-	db "github.com/achange8/Portfolio/DB"
+	database "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/labstack/echo"
 )
@@ -13,7 +13,7 @@ import (
 //check id,pw and give ac,rf token
 //POST localhost/signin
 func SignIn(c echo.Context) error {
-	db := db.Connect()
+	db := database.DB
 	user := new(module.User)
 	if err := c.Bind(user); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{

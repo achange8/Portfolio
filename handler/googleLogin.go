@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	db "github.com/achange8/Portfolio/DB"
+	database "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/labstack/echo"
 	"golang.org/x/oauth2"
@@ -92,7 +92,7 @@ func GoogleCallBack(c echo.Context) error {
 	refreshCookie := module.CreateRefreCookie(id, RFtoken)
 	c.SetCookie(refreshCookie)
 	refresh := new(module.Refresh)
-	db := db.Connect()
+	db := database.DB
 	resultid := db.Find(&refresh, "id=?", id)
 	if resultid.RowsAffected != 0 {
 		//db.Model(&refresh).Where("id =?", id).Update("reftoken", RFtoken)

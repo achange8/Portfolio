@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	db "github.com/achange8/Portfolio/DB"
+	database "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/labstack/echo"
 	"gorm.io/gorm"
@@ -19,7 +19,7 @@ func ReadBoard(c echo.Context) error {
 	id := c.QueryParam("id")
 	board := new(module.BOARD)
 	viewcookie, err := c.Cookie("viewCookie")
-	db := db.Connect()
+	db := database.DB
 	if err != nil {
 		viewcookie = module.CreateViewCookie(id)
 		c.SetCookie(viewcookie)

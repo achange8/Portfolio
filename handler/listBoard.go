@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	db "github.com/achange8/Portfolio/DB"
+	database "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/labstack/echo"
 )
@@ -21,8 +21,7 @@ func ListBoard(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, "bad request")
 	}
-	db := db.Connect()
-	result := db.Table("boards").Order("NUM desc").Find(&list)
+	result := database.DB.Table("boards").Order("NUM desc").Find(&list)
 	total := result.RowsAffected
 	println(total)
 	pages := int(total) / 10
@@ -30,6 +29,6 @@ func ListBoard(c echo.Context) error {
 	if n == pages+1 {
 		end = int(total) % 10
 	}
-	// should return total pages, now list page board
+
 	return c.JSON(http.StatusOK, list[(n-1)*10:10*(n-1)+end])
 }

@@ -1,4 +1,4 @@
-package db
+package database
 
 import (
 	"fmt"
@@ -7,10 +7,11 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
-func Connect() *gorm.DB {
+var DB *gorm.DB
+
+func Connect() {
 	envERR := godotenv.Load("db.env")
 	if envERR != nil {
 		fmt.Println("could not load env file !")
@@ -22,9 +23,15 @@ func Connect() *gorm.DB {
 	DB_Name := os.Getenv("DBname")
 
 	CONNECT := USER + ":" + PASS + "@" + Protocol + "/" + DB_Name + "?charset=utf8mb4&parseTime=True&loc=Asia%2FSeoul"
-	db, err := gorm.Open(mysql.Open(CONNECT), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)})
+	db, err := gorm.Open(mysql.Open(CONNECT), &gorm.Config{})
 	if err != nil {
 		panic(err.Error())
 	}
-	return db
+	sqlDB, err := db.DB()
+	if err != nil {
+		println(err.Error())
+	}
+	sqlDB.SetMaxIdleConns(20)
+	sqlDB.SetMaxOpenConns(200)
+	DB = db
 }

@@ -3,14 +3,14 @@ package handler
 import (
 	"net/http"
 
-	db "github.com/achange8/Portfolio/DB"
+	database "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/labstack/echo"
 )
 
 //check id
 func DuplCheckID(c echo.Context) error {
-	db := db.Connect()
+	db := database.DB
 	user := new(module.User)
 	err := c.Bind(user)
 	if err != nil {

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	db "github.com/achange8/Portfolio/DB"
+	database "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/golang-jwt/jwt"
 	"github.com/joho/godotenv"
@@ -50,7 +50,7 @@ func TokenCheckMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 			if err != nil {
 				return c.JSON(http.StatusUnauthorized, "jwt not allowed , log in again")
 			}
-			db := db.Connect()
+			db := database.DB
 			refresh := new(module.Refresh)
 			db.Find(&refresh, "reftoken=?", rawtoken).Scan(&refresh)
 			fmt.Println(refresh)

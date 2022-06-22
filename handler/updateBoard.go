@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	db "github.com/achange8/Portfolio/DB"
+	database "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo"
@@ -36,7 +36,7 @@ func UpdateBoard(c echo.Context) error {
 	}
 	savetitle := board.TITLE
 	savecontent := board.CONTENT
-	db := db.Connect()
+	db := database.DB
 	db.Find(&board, "NUM = ?", num).Scan(board)
 	if board.WRITER != writer {
 		return c.JSON(http.StatusUnauthorized, "only writer can")

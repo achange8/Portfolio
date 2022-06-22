@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	db "github.com/achange8/Portfolio/DB"
+	database "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo"
@@ -34,12 +34,12 @@ func DeleteBoard(c echo.Context) error {
 	if boarderr != nil {
 		return c.JSON(http.StatusBadRequest, "failed bind")
 	}
-	db := db.Connect()
-	db.Find(&board, "NUM = ?", num).Scan(board)
+
+	database.DB.Find(&board, "NUM = ?", num).Scan(board)
 	if board.WRITER != writer {
 		return c.JSON(http.StatusUnauthorized, "only writer can delete")
 	}
-	db.Where("NUM = ?", num).Delete(&board)
+	database.DB.Where("NUM = ?", num).Delete(&board)
 	path := fmt.Sprintf("./uploads/%d", board.NUM)
 	err = os.RemoveAll(path)
 	if err != nil {

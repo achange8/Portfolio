@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	db "github.com/achange8/Portfolio/DB"
+	database "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo"
@@ -43,8 +43,8 @@ func CreateBoard(c echo.Context) error {
 	}
 	claims, _ := token.Claims.(jwt.MapClaims)
 	board.WRITER = claims["jti"].(string)
-	db := db.Connect()
-	db.Create(&board)
+
+	database.DB.Create(&board)
 
 	for _, file := range files {
 		// Source

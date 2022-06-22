@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	db "github.com/achange8/Portfolio/DB"
+	database "github.com/achange8/Portfolio/DB"
 	"github.com/achange8/Portfolio/module"
 	"github.com/golang-jwt/jwt"
 	"github.com/joho/godotenv"
@@ -14,7 +14,7 @@ import (
 
 //change user ID
 func ModifyID(c echo.Context) error {
-	db := db.Connect()
+	db := database.DB
 	user := new(module.User)
 	err := c.Bind(user)
 	if err != nil {
@@ -53,7 +53,7 @@ func ModifyID(c echo.Context) error {
 
 //change PW
 func ModifyPW(c echo.Context) error {
-	db := db.Connect()
+	db := database.DB
 	PWform := new(module.ChangePWform) //include change PW
 	err := c.Bind(PWform)
 	if err != nil {
