@@ -26,32 +26,42 @@ func SearchBoard(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "bad request")
 	}
 	data := make([]module.ListBoard, 1)
+	db := database.DB
+	var count int64
 	switch s_type {
 	//title + content
 	case "title_content":
-		var count int64
-		db := database.DB
 		db.Model(&data[0].Board).Where("TITLE LIKE ?", "%"+s_keyword+"%").Or("CONTENT LIKE ?", "%"+s_keyword+"%").Count(&count)
-		pages := int(count) / 10
+		data[0].Lastpage = int(count)/10 + 1
 		offset := (n - 1) * 10
 		db.Where("TITLE LIKE ?", "%"+s_keyword+"%").Or("CONTENT LIKE ?", "%"+s_keyword+"%").Offset(offset).Limit(offset + 10).Order("NUM desc").Find(&data[0].Board)
-		lastpage := pages + 1
-		data[0].Lastpage = lastpage
 
 		return c.JSON(http.StatusOK, data)
 
 	case "title":
-		db := database.DB
-		db.Where("TITLE LIKE ?", "%"+s_keyword+"%").Find(&data[0].Board)
-		return c.JSON(http.StatusOK, data[0].Board)
+		db.Model(&data[0].Board).Where("TITLE LIKE ?", "%"+s_keyword+"%").Count(&count)
+		data[0].Lastpage = int(count)/10 + 1
+		offset := (n - 1) * 10
+		db.Where("TITLE LIKE ?", "%"+s_keyword+"%").Offset(offset).Limit(offset + 10).Order("NUM desc").Find(&data[0].Board)
+
+		return c.JSON(http.StatusOK, data)
+
 	case "content":
-		db := database.DB
-		db.Where("CONTENT LIKE ?", "%"+s_keyword+"%").Find(&data[0].Board)
-		return c.JSON(http.StatusOK, data[0].Board)
+		db.Model(&data[0].Board).Where("CONTENT LIKE ?", "%"+s_keyword+"%").Count(&count)
+		data[0].Lastpage = int(count)/10 + 1
+		offset := (n - 1) * 10
+		db.Where("CONTENT LIKE ?", "%"+s_keyword+"%").Offset(offset).Limit(offset + 10).Order("NUM desc").Find(&data[0].Board)
+
+		return c.JSON(http.StatusOK, data)
+
 	case "witer":
-		db := database.DB
-		db.Where("WITER LIKE ?", "%"+s_keyword+"%").Find(&data[0].Board)
-		return c.JSON(http.StatusOK, data[0].Board)
+		db.Model(&data[0].Board).Where("WITER LIKE ?", "%"+s_keyword+"%").Count(&count)
+		data[0].Lastpage = int(count)/10 + 1
+		offset := (n - 1) * 10
+		db.Where("WITER LIKE ?", "%"+s_keyword+"%").Offset(offset).Limit(offset + 10).Order("NUM desc").Find(&data[0].Board)
+
+		return c.JSON(http.StatusOK, data)
 	}
+
 	return c.JSON(http.StatusBadRequest, "bad request")
 }

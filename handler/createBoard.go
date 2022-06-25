@@ -53,6 +53,14 @@ func CreateBoard(c echo.Context) error {
 			return err
 		}
 		defer src.Close()
+		contentType, err := module.GetFileContentType(src)
+		if err != nil {
+			return err
+		}
+		if contentType != "image/png" && contentType != "image/jpg" && contentType != "image/gif" {
+			fmt.Printf("Unacceptable file type = %s\n", contentType)
+			continue
+		}
 
 		// Destination
 		dirpath := fmt.Sprintf("%d", board.NUM)

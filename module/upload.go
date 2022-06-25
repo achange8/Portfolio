@@ -32,10 +32,18 @@ func Upload(c echo.Context) error {
 		}
 		defer src.Close()
 
+		contentType, err := GetFileContentType(src)
+		if err != nil {
+			return err
+		}
+		if contentType != "image/png" && contentType != "image/jpg" && contentType != "image/gif" {
+			fmt.Printf("Unacceptable file type = %s\n", contentType)
+			continue
+		}
 		// Destination
 		dirname := "./uploads"
 		os.MkdirAll(dirname, 0777)
-		filepath := fmt.Sprintf("%s/upload-%s", dirname, file.Filename)
+		filepath := fmt.Sprintf("%s/%s", dirname, file.Filename)
 		dst, err := os.Create(filepath)
 		if err != nil {
 			return err
