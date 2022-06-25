@@ -65,6 +65,7 @@ func CreateBoard(c echo.Context) error {
 		// Destination
 		dirpath := fmt.Sprintf("%d", board.NUM)
 		dirname := "./uploads/" + dirpath
+
 		os.MkdirAll(dirname, 0777)
 		filepath := fmt.Sprintf("%s/%s", dirname, file.Filename)
 		dst, err := os.Create(filepath)

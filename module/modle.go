@@ -23,6 +23,14 @@ type ChangePWform struct {
 	Newpw string
 }
 
+type ImgSrc struct {
+	Imgname string
+	Url     string
+}
+type Images struct {
+	ImgSrc []ImgSrc
+}
+
 type BOARD struct {
 	NUM       int    `gorm:"primaryKey"`
 	TITLE     string `json:"TITLE"`
