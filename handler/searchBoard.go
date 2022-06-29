@@ -54,11 +54,11 @@ func SearchBoard(c echo.Context) error {
 
 		return c.JSON(http.StatusOK, data)
 
-	case "witer":
-		db.Model(&data[0].Board).Where("WITER LIKE ?", "%"+s_keyword+"%").Count(&count)
+	case "writer":
+		db.Model(&data[0].Board).Where("WRITER LIKE ?", "%"+s_keyword+"%").Count(&count)
 		data[0].Lastpage = int(count)/10 + 1
 		offset := (n - 1) * 10
-		db.Where("WITER LIKE ?", "%"+s_keyword+"%").Offset(offset).Limit(offset + 10).Order("NUM desc").Find(&data[0].Board)
+		db.Where("WRITER LIKE ?", "%"+s_keyword+"%").Offset(offset).Limit(offset + 10).Order("NUM desc").Find(&data[0].Board)
 
 		return c.JSON(http.StatusOK, data)
 	}

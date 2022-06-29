@@ -32,6 +32,7 @@ func SignIn(c echo.Context) error {
 	if savepassword == " " {
 		return c.JSON(http.StatusUnauthorized, "bad password")
 	}
+	//check PW
 	checkpw := module.CheckPW_Hash(user.Password, savepassword)
 	if !checkpw {
 		c.JSON(http.StatusUnauthorized, "wrong password")

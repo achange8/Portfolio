@@ -39,7 +39,9 @@ func DeleteBoard(c echo.Context) error {
 	if board.WRITER != writer {
 		return c.JSON(http.StatusUnauthorized, "only writer can delete")
 	}
+	//soft delete board
 	database.DB.Where("NUM = ?", num).Delete(&board)
+	//remove file storage same board num folder
 	path := fmt.Sprintf("./uploads/%d", board.NUM)
 	err = os.RemoveAll(path)
 	if err != nil {

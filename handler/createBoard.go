@@ -53,7 +53,7 @@ func CreateBoard(c echo.Context) error {
 			return err
 		}
 		defer src.Close()
-		contentType, err := module.GetFileContentType(src)
+		contentType := file.Header.Get("Content-Type")
 		if err != nil {
 			return err
 		}
