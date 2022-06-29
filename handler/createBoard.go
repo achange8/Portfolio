@@ -72,6 +72,9 @@ func CreateBoard(c echo.Context) error {
 		if err != nil {
 			return err
 		}
+		//
+		//todos : save filepath in db table
+		//
 		defer dst.Close()
 
 		// Copy

@@ -23,12 +23,14 @@ type ChangePWform struct {
 	Newpw string
 }
 
+//todo : make table in db
 type ImgSrc struct {
-	Imgname string
-	Url     string
+	Boardnum int
+	Imgname  string `json:"imgname"`
 }
 type Images struct {
 	ImgSrc []ImgSrc
+	BOARD
 }
 
 type BOARD struct {

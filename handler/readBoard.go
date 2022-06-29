@@ -38,6 +38,7 @@ func ReadBoard(c echo.Context) error {
 		return c.JSON(http.StatusOK, board)
 	}
 	db.Find(&board, "NUM =?", id).Scan(board)
+
 	return c.JSON(http.StatusOK, board)
 }
 

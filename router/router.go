@@ -50,7 +50,7 @@ func New() *echo.Echo {
 	e.GET("/auth/google/callback", handler.GoogleCallBack) //done
 
 	e.POST("/upload", module.Upload)          // done
-	e.GET("/download/", handler.DownLoadFile) // testing
+	e.GET("/download/", handler.DownLoadFile) // done
 	e.GET("/load/", handler.LoadFile)
 
 	return e
