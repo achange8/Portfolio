@@ -30,9 +30,11 @@ func ModifyID(c echo.Context) error {
 	}
 
 	cookie, err := c.Cookie("RefreCookie")
-	if err != nil {
-		return err
+	if err != nil || cookie.Value == "" {
+		log.Printf("not logged in user")
+		return c.JSON(http.StatusUnauthorized, "login plz")
 	}
+
 	token := cookie.Value
 	refreshClaims := &jwt.StandardClaims{}
 	_, err = jwt.ParseWithClaims(token, refreshClaims,
@@ -46,9 +48,14 @@ func ModifyID(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "ID already exists!")
 	}
 
-	db.Raw("UPDATE users SET id = ? WHERE id = ?", changeId, refreshClaims.Id)
+	db.Raw("UPDATE db.users SET id = ? WHERE id = ?", changeId, refreshClaims.Id).Scan(&user)
 
-	return c.JSON(http.StatusOK, "ID change done")
+	ACCookie := module.LogOutAccCookie()
+	RFCookie := module.LogOutRefreCookie()
+	c.SetCookie(ACCookie)
+	c.SetCookie(RFCookie)
+
+	return c.JSON(http.StatusOK, "ID change done, plz login again")
 }
 
 //change PW
@@ -68,8 +75,9 @@ func ModifyPW(c echo.Context) error {
 	}
 
 	cookie, err := c.Cookie("RefreCookie")
-	if err != nil {
-		return err
+	if err != nil || cookie.Value == "" {
+		log.Printf("not logged in user")
+		return c.JSON(http.StatusUnauthorized, "login plz")
 	}
 	token := cookie.Value
 	refreshClaims := &jwt.StandardClaims{}
@@ -89,5 +97,9 @@ func ModifyPW(c echo.Context) error {
 	hashNewPW, _ := module.HashPassword(PWform.Newpw)
 	db.Raw("UPDATE users SET password = ? WHERE password = ?", hashNewPW, user.Password)
 
-	return c.JSON(http.StatusOK, "PW change Done")
+	ACCookie := module.LogOutAccCookie()
+	RFCookie := module.LogOutRefreCookie()
+	c.SetCookie(ACCookie)
+	c.SetCookie(RFCookie)
+	return c.JSON(http.StatusOK, "PW change Done,plz login again")
 }

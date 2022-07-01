@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	database "github.com/achange8/Portfolio/DB"
@@ -12,6 +13,7 @@ import (
 func GetAllUsers(c echo.Context) error {
 	var list []module.User
 	db := database.DB
-	db.Table("users").Find(&list)
+	result := db.Table("users").Find(&list)
+	fmt.Println(result.RowsAffected)
 	return c.JSON(http.StatusOK, list)
 }
