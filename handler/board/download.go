@@ -1,4 +1,4 @@
-package handler
+package board
 
 import (
 	"fmt"
@@ -10,8 +10,10 @@ import (
 func DownLoadFile(c echo.Context) error {
 	num := c.QueryParam("num")
 	filename := c.QueryParam("name")
+	//todos : get file name in db
 	fmt.Printf("num = %s, fname = %s", num, filename)
 	peth := fmt.Sprintf("./uploads/%s/%s", num, filename)
+	//todos : return images[{"file name" : "db.peth"}]
 	return c.File(peth)
 }
 

@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/achange8/Portfolio/handler"
+	"github.com/achange8/Portfolio/handler/board"
+	"github.com/achange8/Portfolio/handler/user"
 	"github.com/achange8/Portfolio/middlewares"
 	"github.com/achange8/Portfolio/module"
 	"github.com/labstack/echo"
@@ -13,28 +15,36 @@ import (
 //board crud done
 //user curd	done
 //oauth google login done
-//todos : search api
+//search api done
+
+//todos : db refactorying , transaction user,board
 func New() *echo.Echo {
 	e := echo.New()
 	g := e.Group("/board")
+	u := e.Group("/user")
+
+	u.Use(middlewares.TokenCheckMiddleware)
 	g.Use(middlewares.TokenCheckMiddleware)
 
+	u.GET("/check", user.Usercheck)
 	e.GET("/", handler.Test)
-	e.POST("/signUp", handler.SignUp)         //done
-	e.POST("/signIn", handler.SignIn)         //done
-	e.POST("/modifyID", handler.ModifyID)     //done
-	e.POST("/modifyPW", handler.ModifyPW)     //done
-	e.POST("/duplicate", handler.DuplCheckID) //done
-	e.GET("/signOut", handler.SignOut)        //done
-	g.POST("/write", handler.CreateBoard)     //done
-	e.GET("/list", handler.ListBoard)         //done
-	e.GET("/readBoard/", handler.ReadBoard)   //done
-	g.POST("/modify/", handler.UpdateBoard)   //done
-	g.DELETE("/delete/", handler.DeleteBoard) // done
-	e.DELETE("/user", handler.UserDelete)     //done
+	//user sign
+	e.POST("/signUp", user.SignUp)         //done
+	e.POST("/signIn", user.SignIn)         //done
+	e.POST("/modifyID", user.ModifyID)     //done
+	e.POST("/modifyPW", user.ModifyPW)     //done
+	e.POST("/duplicate", user.DuplCheckID) //done
+	e.GET("/signOut", user.SignOut)        //done
+	e.DELETE("/user", user.UserDelete)     //done
+	//board
+	e.GET("/search", board.SearchBoard)     // done
+	e.GET("/list", board.ListBoard)         //done
+	e.GET("/readBoard/", board.ReadBoard)   //done
+	g.POST("/write", board.CreateBoard)     //done
+	g.POST("/modify/", board.UpdateBoard)   //done
+	g.DELETE("/delete/", board.DeleteBoard) // done
 	///for test user info///
-	e.GET("/allUser", handler.GetAllUsers) //done
-	e.GET("/search", handler.SearchBoard)  // done
+	e.GET("/allUser", user.GetAllUsers) //done
 	////
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -49,9 +59,10 @@ func New() *echo.Echo {
 	e.GET("/auth/google/login", handler.GoogleLogin)       //done
 	e.GET("/auth/google/callback", handler.GoogleCallBack) //done
 
-	e.POST("/upload", module.Upload)          // done
-	e.GET("/download/", handler.DownLoadFile) // done
-	e.GET("/load/", handler.LoadFile)
+	//file upload
+	e.POST("/upload", module.Upload)        // done
+	e.GET("/download/", board.DownLoadFile) // done
+	e.GET("/load/", board.LoadFile)
 
 	return e
 }

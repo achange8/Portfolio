@@ -1,4 +1,4 @@
-package handler
+package board
 
 import (
 	"encoding/json"
@@ -14,7 +14,6 @@ import (
 )
 
 //check token in middleware, make token
-//click write button, work this api
 //method : POST ,form-data, "files","data".
 //data in content, title.
 func CreateBoard(c echo.Context) error {
