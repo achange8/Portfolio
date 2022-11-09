@@ -12,7 +12,7 @@ import (
 var DB *gorm.DB
 
 func Connect() {
-	envERR := godotenv.Load(".env")
+	envERR := godotenv.Load("db.env")
 	if envERR != nil {
 		fmt.Println("could not load env file !")
 		os.Exit(1)
