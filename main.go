@@ -11,7 +11,6 @@ import (
 // todos : google oauth login
 // may be file upload, downlard
 func main() {
-
 	fmt.Println("Hello echo!")
 	database.Connect()
 	e := router.New()

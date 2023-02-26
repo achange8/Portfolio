@@ -25,12 +25,10 @@ func Connect() {
 	CONNECT := USER + ":" + PASS + "@" + Protocol + "/" + DB_Name + "?charset=utf8mb4&parseTime=True&loc=Asia%2FSeoul"
 	db, err := gorm.Open(mysql.Open(CONNECT), &gorm.Config{})
 	if err != nil {
-		println("err 1")
 		panic(err.Error())
 	}
 	sqlDB, err := db.DB()
 	if err != nil {
-		println("2nd err ")
 		println(err.Error())
 	}
 	sqlDB.SetMaxIdleConns(10)
