@@ -10,9 +10,9 @@ import (
 	"github.com/labstack/echo"
 )
 
-//method : POST
-//api : /board/modify/?num=
-//db connect time : 2 times
+// method : POST
+// : /board/modify/?num=
+// db connect time : 2 times
 func UpdateBoard(c echo.Context) error {
 	cookie, err := c.Cookie("accessCookie")
 	if err != nil {

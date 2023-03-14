@@ -11,8 +11,8 @@ import (
 	"github.com/labstack/echo"
 )
 
-//if match jwt.id,db writer, delet board in db where board.num , delete uploads folder name %d,"num"
-//method : board/delete/?num= , query parse "num"
+// if match jwt.id,db writer, delete board in db where board.num , delete uploads folder name %d,"num"
+// method : board/delete/?num= , query parse "num"
 func DeleteBoard(c echo.Context) error {
 	cookie, err := c.Cookie("accessCookie")
 	if err != nil {

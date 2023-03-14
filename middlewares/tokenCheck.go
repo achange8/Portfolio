@@ -13,9 +13,9 @@ import (
 	"github.com/labstack/echo"
 )
 
-//log in check ACToken
-//if dont have ACToken, look up RefToken
-//if have ref token, recreate ac token else return status unhorized
+// login check ACToken
+// if dont have ACToken, look up RefToken
+// if have RefToken, recreate ac token else return status unhorized
 func TokenCheckMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		envERR := godotenv.Load("db.env")
